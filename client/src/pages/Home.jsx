@@ -26,11 +26,8 @@ export default function Home() {
   }
 
   useEffect(() => {
-    // axios.get("entries")
-    //   .then(res => { setJournalEntries(res.data) })
-    fetch("entries", {
-      method: "GET"
-    })
+    axios.get("http://localhost:5000/entries")
+      .then(res => { setJournalEntries(res.data) })
   }, [])
 
   const getEntries = () => {
