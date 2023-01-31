@@ -1,0 +1,82 @@
+.bold {
+    font-weight: bold;
+}
+
+.nav {
+    background-color: #F55A5A;
+    color: white;
+}
+
+.navbar-brand > span {
+    color: white;
+}
+
+.card {
+    border: none;
+}
+
+.card--thumbnail {
+    /* height: 275px;
+    width: 175px; */
+    width: 80%;
+    height: 85%;
+}
+
+.card--location {
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+}
+
+.card--location > p {
+    letter-spacing: 1px;
+}
+
+.card--location > a {
+    color: #918E9B;
+}
+
+.card--description {
+    max-width: 70%;
+    overflow-wrap: normal;
+    font-size: 18px;
+}
+
+.card--btn {
+    display: none;
+}
+
+.card--btn, .form--btn {
+    background-color: #F55A5A;
+    border: none;
+}
+
+.card--btn:hover, .form--btn:hover {
+    background-color: white;
+    color: #F55A5A;
+    border: 1px solid #F55A5A;
+ }
+
+.card:hover  .card--btn, .card--btn:hover {
+    display: flex;
+}
+
+.form--container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px auto;
+}
+
+.form--btn { 
+    padding: 15px 50px;
+ }
+
+
+#create-new-form {
+    width: 60%;
+}
+
+.form-date-container {
+    width: 48%;
+}
