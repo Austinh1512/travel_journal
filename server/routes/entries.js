@@ -14,6 +14,7 @@ const validateSchema = async (req, res, next) => {
 
 router.get("/", async (req, res) => {
     const entries = await JournalEntry.find({});
+    console.log("route hit");
     res.status(200).send(entries);
 })
 

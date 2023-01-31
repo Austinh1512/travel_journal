@@ -17,7 +17,7 @@ export default function Home() {
   }
 
   const deleteJournalEntry = (id) => {
-    axios.delete(`http://localhost:5000/entries/${id}`)
+    axios.delete(`entries/${id}`)
       .then(() => { setJournalEntries((prevEntries) => prevEntries.filter(entry => entry._id !== id)); })
   }
 
@@ -26,8 +26,11 @@ export default function Home() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:5000/entries")
-      .then(res => { setJournalEntries(res.data) })
+    // axios.get("entries")
+    //   .then(res => { setJournalEntries(res.data) })
+    fetch("entries", {
+      method: "GET"
+    })
   }, [])
 
   const getEntries = () => {

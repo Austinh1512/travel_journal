@@ -7,12 +7,12 @@ import axios from "axios"
 export default function EntryForm(props) {
 
   const handlePostRequest = (values) => {
-    axios.post("http://localhost:5000/entries", values)
+    axios.post("entries", values)
       .then(res => { props.addJournalEntry(res.data) });
   }
 
   const handlePutRequest = (values) => {
-    axios.put(`http://localhost:5000/entries/${props.entryID}`, values)
+    axios.put(`entries/${props.entryID}`, values)
       .then(res => { props.updateJournalEntry(props.entryID, res.data) });
     props.toggleModal();
   }
