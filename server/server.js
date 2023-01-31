@@ -26,7 +26,7 @@ app.use(express.json())
 
 //Route Handlers
 const entryRouter = require("./routes/entries");
-app.use("/entries", entryRouter);
+app.use("/api/entries", entryRouter);
 
 app.listen(5000, () => { console.log("Server running...") });
 
