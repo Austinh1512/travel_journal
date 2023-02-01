@@ -4,25 +4,23 @@ if (process.env.NODE_ENV !== "production") {
 
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
-const JournalEntry = require("./models/journalEntry");
 const cors = require("cors");
+const corsOptions = require("./config/corsOptions");
+const cookieParser = require("cookie-parser");
+const connectDB = require("./config/connect-db");
+const passport = require("passport");
 
 //Connect to Mongo
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USER_NAME}:${process.env.MONGO_PASSWORD}@cluster0.hzrmebg.mongodb.net/?retryWrites=true&w=majority`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-    console.log("Database connected!");
-});
-mongoose.set('strictQuery', false); 
+ connectDB();
 
 //Middleware
-app.use(cors());
-app.use(express.json())
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(cookieParser());
+app.use(passport.initialize());
+
+//Passport jwt strategy
+require("./config/passport-jwt");
 
 //Route Handlers
 const entryRouter = require("./routes/entries");
