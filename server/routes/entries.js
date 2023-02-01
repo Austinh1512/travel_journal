@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const JournalEntry = require("../models/journalEntry");
 const { entrySchema } = require("../schemas");
+const handleAsync = require("express-async-handler");
 
 const validateSchema = async (req, res, next) => {
     try {
@@ -12,26 +13,26 @@ const validateSchema = async (req, res, next) => {
     }
 }
 
-router.get("/", async (req, res) => {
+router.get("/", handleAsync(async (req, res) => {
     const entries = await JournalEntry.find({});
     res.status(200).send(entries);
-})
+}))
 
-router.post("/", validateSchema,  async (req, res) => {
+router.post("/", validateSchema,  handleAsync(async (req, res) => {
     const entry = new JournalEntry(req.body);
     await entry.save();
     res.status(200).send(entry);
-})
+}))
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", handleAsync(async (req, res) => {
     const updated_entry = await JournalEntry.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true });
     await updated_entry.save();
     res.status(200).send(updated_entry);
-})
+}))
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", handleAsync(async (req, res) => {
     await JournalEntry.findByIdAndDelete(req.params.id);
     res.sendStatus(200);
-})
+}))
 
 module.exports = router;
