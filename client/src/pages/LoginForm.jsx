@@ -2,6 +2,7 @@ import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { Formik } from "formik"
 import * as Yup from "yup"
+import axios from "../api/axios"
 
 export default function LoginForm() {
     return (
@@ -19,7 +20,11 @@ export default function LoginForm() {
                     password: Yup.string()
                         .required("Please enter a password")
                 })}
-                onSubmit={ console.log("Submit") }
+                onSubmit={ (values, { setSubmitting }) => {
+                    axios.post("/auth/login", values)
+                        .then(res => console.log(res.data));
+                    setSubmitting(false);
+                } }
             >
                 { formik => (
                     <Form noValidate className='mt-4 d-flex flex-column justify-content-center' onSubmit={formik.handleSubmit}>
@@ -56,6 +61,10 @@ export default function LoginForm() {
                             <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Text muted>Don't have an account? Sign up <a href="/register">here.</a></Form.Text>
+
+                        <Button variant="primary" type="submit" size="lg" className='form--btn align-self-center'>
+                            Submit
+                        </Button>
                     </Form>
                 )}
             </Formik>

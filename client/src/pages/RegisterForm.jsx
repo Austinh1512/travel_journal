@@ -2,6 +2,7 @@ import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { Formik } from "formik"
 import * as Yup from "yup"
+import axios from "../api/axios"
 
 export default function RegisterForm() {
     return (
@@ -22,7 +23,11 @@ export default function RegisterForm() {
                         .required("Please re-enter your password")
                         .oneOf([Yup.ref("password"), null], "Passwords must match")
                 })}
-                onSubmit={ console.log("Submit") }
+                onSubmit={ (values, { setSubmitting }) => {
+                    axios.post("/auth/register", values)
+                        .then(res => console.log(res.data));
+                    setSubmitting(false);
+                } }
             >
                 { formik => (
                     <Form noValidate className='mt-4 d-flex flex-column justify-content-center' onSubmit={formik.handleSubmit}>
@@ -75,6 +80,9 @@ export default function RegisterForm() {
                             <Form.Control.Feedback type="invalid">{formik.errors.confirmed_password}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Text muted>Already have an account? Sign in <a href="/login">here.</a></Form.Text>
+                        <Button variant="primary" type="submit" size="lg" className='form--btn align-self-center'>
+                            Submit
+                        </Button>
                     </Form>
                 )}
             </Formik>
