@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const JournalEntry = require("./models/journalEntry");
 
-mongoose.connect("mongodb+srv://austinh1512:Leslie0106-@cluster0.hzrmebg.mongodb.net/?retryWrites=true&w=majority", {
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
