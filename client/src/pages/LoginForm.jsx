@@ -1,10 +1,16 @@
+import { useContext } from "react"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import axios from "../api/axios"
+import { Link, useNavigate } from "react-router-dom"
+import AuthContext from "../context/AuthContext"
 
 export default function LoginForm() {
+    const { setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
+
     return (
         <>
             <h1 className="mt-5">Login</h1>
@@ -12,7 +18,6 @@ export default function LoginForm() {
                 initialValues={{
                     username: "",
                     password: "",
-                    confirmed_password: "",
                 }}
                 validationSchema={Yup.object({
                     username: Yup.string()
@@ -20,10 +25,17 @@ export default function LoginForm() {
                     password: Yup.string()
                         .required("Please enter a password")
                 })}
-                onSubmit={ (values, { setSubmitting }) => {
-                    axios.post("/auth/login", values)
-                        .then(res => console.log(res.data));
-                    setSubmitting(false);
+                onSubmit={ async (values, { resetForm }) => {
+                    try {
+                        console.log(values);
+                        const res = await axios.post("/auth/login", JSON.stringify(values));
+                        setUser(res.data);
+                        resetForm();
+                        navigate("/", { replace: true });
+                    } catch (err) {
+                        console.log(err);
+                        resetForm();
+                    }
                 } }
             >
                 { formik => (
@@ -60,7 +72,7 @@ export default function LoginForm() {
                             <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
                             <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Text muted>Don't have an account? Sign up <a href="/register">here.</a></Form.Text>
+                        <Form.Text muted>Don't have an account? Sign up <Link to="/register">here.</Link></Form.Text>
 
                         <Button variant="primary" type="submit" size="lg" className='form--btn align-self-center'>
                             Submit

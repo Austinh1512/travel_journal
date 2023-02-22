@@ -3,8 +3,13 @@ import Button from "react-bootstrap/Button"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import axios from "../api/axios"
+import { Link, useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import AuthContext from "../context/AuthContext"
 
 export default function RegisterForm() {
+    const { setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
     return (
         <>
             <h1 className="mt-5">Register</h1>
@@ -23,10 +28,15 @@ export default function RegisterForm() {
                         .required("Please re-enter your password")
                         .oneOf([Yup.ref("password"), null], "Passwords must match")
                 })}
-                onSubmit={ (values, { setSubmitting }) => {
-                    axios.post("/auth/register", values)
-                        .then(res => console.log(res.data));
-                    setSubmitting(false);
+                onSubmit={ async (values, { resetForm }) => {
+                    try {
+                        const res = await axios.post("/auth/register", JSON.stringify(values), { withCredentials: true});
+                        setUser(res.data);
+                        navigate("/", { replace: true });
+                    } catch (err) {
+                        console.error(err);
+                    }
+                    
                 } }
             >
                 { formik => (
@@ -79,7 +89,7 @@ export default function RegisterForm() {
                             <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
                             <Form.Control.Feedback type="invalid">{formik.errors.confirmed_password}</Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Text muted>Already have an account? Sign in <a href="/login">here.</a></Form.Text>
+                        <Form.Text muted>Already have an account? Sign in <Link to="/login">here.</Link></Form.Text>
                         <Button variant="primary" type="submit" size="lg" className='form--btn align-self-center'>
                             Submit
                         </Button>
