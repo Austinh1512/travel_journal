@@ -2,9 +2,11 @@ import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { Formik } from "formik"
 import * as Yup from "yup"
-import axios from "axios"
+import useAxiosAuth from "../hooks/useAxiosAuth"
+
 
 export default function EntryForm(props) {
+  const axios = useAxiosAuth();
 
   const handlePostRequest = (values) => {
     axios.post("http://localhost:5000/api/entries", values)
