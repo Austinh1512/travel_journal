@@ -3,19 +3,22 @@ import Button from "react-bootstrap/Button"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import useAxiosAuth from "../hooks/useAxiosAuth"
+import { useContext } from "react"
+import AuthContext from "../context/AuthContext"
 
 
 export default function EntryForm(props) {
+  const { user } = useContext(AuthContext);
   const axios = useAxiosAuth();
 
-  const handlePostRequest = (values) => {
-    axios.post("http://localhost:5000/api/entries", values)
-      .then(res => { props.addJournalEntry(res.data) });
+  const handlePostRequest = async (values) => {
+    const res = await axios.post("api/entries", JSON.stringify({ ...values, user }))
+    props.addJournalEntry(res.data);
   }
 
   const handlePutRequest = (values) => {
-    axios.put(`http://localhost:5000/entries/api/${props.entryID}`, values)
-      .then(res => { props.updateJournalEntry(props.entryID, res.data) });
+    axios.put(`api/entries/${props.entryID}`, JSON.stringify(values))
+    props.updateJournalEntry(props.entryID, res.data);
     props.toggleModal();
   }
 
