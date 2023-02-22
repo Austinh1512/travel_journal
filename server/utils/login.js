@@ -14,7 +14,7 @@ const login = async (user, res) => {
     user.refreshToken = refreshToken;
     await user.save();
 
-    res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 1000 * 60 * 60 * 24 * 7 }); //1 week
+    res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "None", maxAge: 1000 * 60 * 60 * 24 * 7 }); //1 week
 
     res.status(201).json({ "username": user.username, accessToken });
 }
