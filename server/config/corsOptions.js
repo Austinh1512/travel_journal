@@ -1,7 +1,7 @@
-const whitelistedOrigins = require("./whitelistedOrigins");
+const allowedOrigins = require("./allowedOrigins");
 
 const corsOptions = {
-    origin: whitelistedOrigins,
+    origin: allowedOrigins,
     credentials: true,
     optionsSuccessStatus: 200
 }
