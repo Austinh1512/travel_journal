@@ -3,6 +3,7 @@ const router = express.Router();
 const JournalEntry = require("../models/journalEntry");
 const { entrySchema } = require("../schemas");
 const handleAsync = require("express-async-handler");
+const passport = require("passport");
 
 const validateSchema = async (req, res, next) => {
     try {
@@ -18,7 +19,7 @@ router.get("/", handleAsync(async (req, res) => {
     res.status(200).send(entries);
 }))
 
-router.post("/", validateSchema,  handleAsync(async (req, res) => {
+router.post("/", passport.authenticate("jwt", { session: false }), validateSchema,  handleAsync(async (req, res) => {
     const entry = new JournalEntry(req.body);
     await entry.save();
     res.status(200).send(entry);
