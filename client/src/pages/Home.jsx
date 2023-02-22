@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import JournalEntry from "../components/JournalEntry"
 import EntryForm from "../components/EntryForm"
 import Button from "react-bootstrap/Button"
-import axios from "axios"
+import axios from "../api/axios"
 
 export default function Home() {
-    const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [journalEntries, setJournalEntries] = useState([]);
 
   const toggleForm = () => { setShowForm(prev => !prev) }
@@ -17,7 +17,7 @@ export default function Home() {
   }
 
   const deleteJournalEntry = (id) => {
-    axios.delete(`http://localhost:entries/api/${id}`)
+    axios.delete(`/entries/${id}`)
       .then(() => { setJournalEntries((prevEntries) => prevEntries.filter(entry => entry._id !== id)); })
   }
 
@@ -26,11 +26,13 @@ export default function Home() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/entries")
-      .then(res => { setJournalEntries(res.data) })
-  }, [])
+    (async () => {
+      const res = await axios.get("/entries");
+      setJournalEntries(res.data);
+    })()
+    }, [])
 
-  const getEntries = () => {
+  const displayEntries = () => {
     if (journalEntries.length) {
       return journalEntries.map(item => {
         return <JournalEntry 
@@ -53,7 +55,7 @@ export default function Home() {
 
     return (
         <>
-            {getEntries()}
+            {displayEntries()}
             <div className="form--container">
             <Button variant="primary" size="lg" className="form--btn" onClick={toggleForm} href="#create-new-form" >
                 { !showForm ? "Create New +" : "Nevermind :(" }
