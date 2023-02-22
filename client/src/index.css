@@ -11,6 +11,19 @@
     color: white;
 }
 
+.nav--button {
+    border: none;
+    background-color: #F55A5A;
+    color: white;
+}
+
+.nav--button:hover {
+    text-decoration: underline;
+    border: none;
+    background-color: #F55A5A;
+    color: white;
+}
+
 .card {
     border: none;
 }
