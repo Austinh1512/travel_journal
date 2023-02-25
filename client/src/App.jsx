@@ -1,27 +1,26 @@
-import { library } from "@fortawesome/fontawesome-svg-core"
-import { faEarthAmericas, faLocationDot, faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { Routes, Route } from "react-router-dom"
 import Layout from "./pages/Layout"
+import PersistLogin from "./components/PersistLogin"
+import LandingPage from "./pages/LandingPage"
 import Home from "./pages/Home"
 import LoginForm from "./pages/LoginForm"
 import RegisterForm from "./pages/RegisterForm"
-
-
-library.add(faEarthAmericas, faLocationDot, faPenToSquare, faTrash);
+import NotFound from "./pages/NotFound"
 
 export default function App() {
   
-
   return (
-    <>
-        <Routes>
-          <Route path="/" element={<Layout />}> 
-            <Route index element={<Home />} />
-            <Route path="login" element={<LoginForm />} />
-            <Route path="register" element={<RegisterForm />} />
+      <Routes>
+        <Route index element={<LandingPage />} />
+        <Route element={<Layout />}>
+          <Route element={<PersistLogin />}>
+            <Route path="entries" element={<Home />} />
           </Route>
-        </Routes>
-    </>
+          <Route path="login" element={<LoginForm />} />
+          <Route path="register" element={<RegisterForm />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
   )
 }
 

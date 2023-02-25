@@ -4,7 +4,8 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
 import EditModal from "./EditModal"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { PencilSquare, Trash, GeoAltFill } from "react-bootstrap-icons"
+
 
 export default function JournalEntry(props) {
     const [showModal, setShowModal] = useState(false);
@@ -33,17 +34,17 @@ export default function JournalEntry(props) {
                     <Card.Img variant="left" className="rounded card--thumbnail align-self-center" src={props.values.thumbnail} />
                     <div className="mt-3 d-flex justify-content-center gap-4">
                         <Button className="card--btn" onClick={() => { toggleModal(); setModalOptions({ type: "update", action: props.updateJournalEntry }); }}>
-                            <FontAwesomeIcon icon="pen-to-square" />
+                            <PencilSquare />
                         </Button>
                         <Button className="card--btn" onClick={() => { toggleModal(); setModalOptions({ type: "delete", action: props.deleteJournalEntry }); }}>
-                            <FontAwesomeIcon icon="trash" />
+                            <Trash />
                         </Button>
                     </div>
                 </Col>
                 <Col md={9} lg={10}>
                     <Card.Body className="ps-4">
                         <div className="card--location">
-                            <FontAwesomeIcon icon="location-dot" color="#F55A5A" />
+                            <GeoAltFill color="#F55A5A" />
                             <p>{props.values.country.toUpperCase()}</p>
                             <Card.Link href="#" className="ms-4">View on Google Maps</Card.Link>
                         </div>

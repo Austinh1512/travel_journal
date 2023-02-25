@@ -1,9 +1,9 @@
 import { useContext } from "react"
 import { Container, Navbar, Nav, Form, Button } from "react-bootstrap"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import AuthContext from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
 import axios from "../api/axios"
+import { GlobeAmericas } from "react-bootstrap-icons"
 
 export default function NavBar() {
     const { user, setUser } = useContext(AuthContext);
@@ -11,10 +11,11 @@ export default function NavBar() {
 
     const handleLogout = async (e) => {
         e.preventDefault();
-        const res = await axios.get("/auth/logout", { withCredentials: true });
+        await axios.get("/auth/logout", { withCredentials: true });
         setUser({
             username: "",
-            accessToken: ""
+            accessToken: "",
+            userID: ""
         });
         navigate("/", { replace: true });
     }
@@ -23,7 +24,7 @@ export default function NavBar() {
         <Navbar className="nav">
             <Container className="justify-content-center">
                 <Navbar.Brand href="http://localhost:5173" className="d-flex align-items-center gap-2">
-                    <FontAwesomeIcon icon="earth-americas" color="white"/>
+                    <GlobeAmericas color="white"/>
                     <span className="fs-6 py-2">My Travel Journal</span>
                 </Navbar.Brand>
                 <Nav className="ms-auto">
