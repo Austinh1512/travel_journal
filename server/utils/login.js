@@ -16,7 +16,7 @@ const login = async (user, res) => {
 
     res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "None", maxAge: 1000 * 60 * 60 * 24 * 7 }); //1 week
 
-    res.status(201).json({ "username": user.username, accessToken });
+    res.status(201).json({ "username": user.username, "userID": user._id, accessToken });
 }
 
 module.exports = login;
