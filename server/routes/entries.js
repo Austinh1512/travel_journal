@@ -1,39 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const JournalEntry = require("../models/journalEntry");
-const { entrySchema } = require("../schemas");
 const handleAsync = require("express-async-handler");
+const { getEntries, addEntry, editEntry, deleteEntry } = require("../controllers/entries");
 const passport = require("passport");
+const validateSchema = require("../middleware/validateSchema");
 
-const validateSchema = async (req, res, next) => {
-    try {
-        await entrySchema.validateAsync(req.body);
-        next();
-    } catch(error) {
-        res.status(400).json({"error": error.details.map(err => err.message).join(",")});
-    }
-}
+router.route("/")
+    .get(handleAsync(getEntries))
+    .post(passport.authenticate("jwt", { session: false }), validateSchema, handleAsync(addEntry))
 
-router.get("/", handleAsync(async (req, res) => {
-    const entries = await JournalEntry.find({});
-    res.status(200).send(entries);
-}))
-
-router.post("/", passport.authenticate("jwt", { session: false }), validateSchema,  handleAsync(async (req, res) => {
-    const entry = new JournalEntry(req.body);
-    await entry.save();
-    res.status(200).send(entry);
-}))
-
-router.put("/:id", handleAsync(async (req, res) => {
-    const updated_entry = await JournalEntry.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, new: true });
-    await updated_entry.save();
-    res.status(200).send(updated_entry);
-}))
-
-router.delete("/:id", handleAsync(async (req, res) => {
-    await JournalEntry.findByIdAndDelete(req.params.id);
-    res.sendStatus(200);
-}))
+router.route("/:id")
+    .put(validateSchema, handleAsync(editEntry))
+    .delete(handleAsync(deleteEntry))
 
 module.exports = router;
