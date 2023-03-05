@@ -6,13 +6,13 @@ export default function useRefreshToken() {
     const { setUser } = useContext(AuthContext);
 
     const refresh = async () => {
-        const res = await axios.get("/auth/refresh", { withCredentials: true });
-        setUser(prev => (
-            {
-                ...prev,
+        const res = await axios.get("/auth/refresh");
+        setUser({
+                username: res.data.username,
+                userID: res.data.userID,
                 accessToken: res.data.accessToken
             }
-        ));
+        );
         return res.data.accessToken;
     }
 
