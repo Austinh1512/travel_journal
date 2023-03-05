@@ -23,7 +23,7 @@ export default function NavBar() {
     return (
         <Navbar className="nav">
             <Container className="justify-content-center">
-                <Navbar.Brand href="http://localhost:5173" className="d-flex align-items-center gap-2">
+                <Navbar.Brand href={`/${user.userID}`} className="d-flex align-items-center gap-2">
                     <GlobeAmericas color="white"/>
                     <span className="fs-6 py-2">My Travel Journal</span>
                 </Navbar.Brand>
