@@ -3,10 +3,13 @@ import JournalEntry from "../components/JournalEntry"
 import EntryForm from "../components/EntryForm"
 import Button from "react-bootstrap/Button"
 import axios from "../api/axios"
+import AuthContext from "../context/AuthContext"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
   const [journalEntries, setJournalEntries] = useState([]);
+  const { user } = useContext(AuthContext);
+
 
   const toggleForm = () => { setShowForm(prev => !prev) }
 
@@ -27,7 +30,7 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get("/entries");
+      const res = await axios.get(`/entries?id=${user.userID}`);
       setJournalEntries(res.data);
     })()
     }, [])
