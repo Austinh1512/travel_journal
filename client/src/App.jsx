@@ -11,14 +11,17 @@ export default function App() {
   
   return (
       <Routes>
+        <Route element={<PersistLogin />}>
         <Route index element={<LandingPage />} />
-        <Route element={<Layout />}>
-          <Route element={<PersistLogin />}>
-            <Route path="entries" element={<Home />} />
+          <Route element={<Layout />}>
+            <Route path="/:id" element={<Home />} />
           </Route>
+        </Route>
+        
+        <Route element={<Layout />}>
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
-        </Route>
+        </Route>  
         <Route path="*" element={<NotFound />} />
       </Routes>
   )
