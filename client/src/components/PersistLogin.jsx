@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { Oval } from "react-loader-spinner"
 import { useState, useEffect, useContext } from "react"
 import useRefreshToken from "../hooks/useRefreshToken"
@@ -7,6 +7,7 @@ import AuthContext from "../context/AuthContext"
 export default function PersistLogin() {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
+    const navigate = useNavigate();
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
@@ -14,7 +15,8 @@ export default function PersistLogin() {
             try {
                 await refresh();
             } catch(err) {
-                console.error(err)
+                console.error(err);
+                navigate("/");
             } finally {
                 setIsLoading(false);
             }
