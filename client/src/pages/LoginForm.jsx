@@ -27,11 +27,10 @@ export default function LoginForm() {
                 })}
                 onSubmit={ async (values, { resetForm }) => {
                     try {
-                        console.log(values);
                         const res = await axios.post("/auth/login", JSON.stringify(values));
                         setUser(res.data);
                         resetForm();
-                        navigate("/", { replace: true });
+                        navigate(`/${res.data.userID}`, { replace: true });
                     } catch (err) {
                         console.log(err);
                         resetForm();

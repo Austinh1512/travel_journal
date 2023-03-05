@@ -30,9 +30,9 @@ export default function RegisterForm() {
                 })}
                 onSubmit={ async (values, { resetForm }) => {
                     try {
-                        const res = await axios.post("/auth/register", JSON.stringify(values), { withCredentials: true});
+                        const res = await axios.post("/auth/register", JSON.stringify(values));
                         setUser(res.data);
-                        navigate("/", { replace: true });
+                        navigate(`/${res.data.userID}`, { replace: true });
                     } catch (err) {
                         console.error(err);
                     }
