@@ -7,7 +7,10 @@ const journalEntrySchema = new Schema({
     endDate: String,
     country: String,
     description: String,
-    thumbnail: String
+    images: [{
+        url: String,
+        filename: String
+    }]
 })
 
 module.exports = mongoose.model("JournalEntry", journalEntrySchema);

@@ -21,7 +21,10 @@ const seeds = [
         startDate: "2021-01-12",
         endDate: "2021-01-24",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        thumbnail: "https://source.unsplash.com/WLxQvbMyfas"
+        images: {
+            url: "https://res.cloudinary.com/dabtufkqn/image/upload/v1678164013/TravelJournal/mt-fuji_h9psvi.jpg",
+            filename: "TravelJournal/mt-fuji_h9psvi"
+        }
     },
 
     {
@@ -30,7 +33,10 @@ const seeds = [
         startDate: "2021-01-12",
         endDate: "2021-01-24",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        thumbnail: "https://source.unsplash.com/JmuyB_LibRo"
+        images: {
+            url: "https://res.cloudinary.com/dabtufkqn/image/upload/v1678164013/TravelJournal/OperaHouse_c7jb69",
+            filename: "TravelJournal/OperaHouse_c7jb69"
+        }
     },
 
     {
@@ -39,7 +45,10 @@ const seeds = [
         startDate: "2021-01-12",
         endDate: "2021-01-24",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        thumbnail: "https://source.unsplash.com/3PeSjpLVtLg"
+        images: {
+            url: "https://res.cloudinary.com/dabtufkqn/image/upload/v1678164092/TravelJournal/geirangerfjord_gq2hnk.jpg",
+            filename: "TravelJournal/geirangerfjord_gq2hnk"
+        }
     },
 
     {
@@ -48,7 +57,10 @@ const seeds = [
         startDate: "2021-01-12",
         endDate: "2021-01-24",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        thumbnail: "https://unsplash.com/photos/iWMfiInivp4"
+        images: {
+            url: "https://res.cloudinary.com/dabtufkqn/image/upload/v1678164183/TravelJournal/Taj_Mahal_dmeuj8.jpg",
+            filename: "TravelJournal/Taj_Mahal_dmeuj8"
+        }
     }
 ]
 
