@@ -4,10 +4,14 @@ const handleAsync = require("express-async-handler");
 const { getEntries, addEntry, editEntry, deleteEntry } = require("../controllers/entries");
 const passport = require("passport");
 const validateSchema = require("../middleware/validateSchema");
+const multer = require("multer");
+const { storage } = require("../config/cloudinary");
+const upload = multer({ storage });
+
 
 router.route("/")
     .get(handleAsync(getEntries))
-    .post(passport.authenticate("jwt", { session: false }), validateSchema, handleAsync(addEntry))
+    .post(passport.authenticate("jwt", { session: false }), upload.any(), validateSchema, handleAsync(addEntry))
 
 router.route("/:id")
     .put(validateSchema, handleAsync(editEntry))
