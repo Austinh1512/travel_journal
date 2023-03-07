@@ -14,9 +14,12 @@ module.exports.getEntries = async (req, res) => {
 }
 
 module.exports.addEntry = async (req, res) => {
-    const { values, user } = req.body;
+    const values = JSON.parse(req.body.values);
+    const user = JSON.parse(req.body.user);
+
     const found_user = await User.findOne({ username: user.username });
     const entry = new JournalEntry(values);
+    entry.images = req.files.map(file => ({ url: file.path, filename: file.filename }))
     found_user.journal_entries.push(entry);
     await found_user.save();
     await entry.save();
