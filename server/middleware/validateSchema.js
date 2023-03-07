@@ -2,7 +2,7 @@ const { entrySchema } = require("../schemas");
 
 const validateSchema = async (req, res, next) => {
     try {
-        await entrySchema.validateAsync(req.body.values);
+        await entrySchema.validateAsync(JSON.parse(req.body.values));
         next();
     } catch(error) {
         res.status(400).json({"error": error.details.map(err => err.message).join(",")});
