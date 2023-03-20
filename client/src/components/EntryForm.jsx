@@ -15,8 +15,22 @@ export default function EntryForm(props) {
   const axios = useAxiosInterceptors();
 
   const handlePostRequest = async (values) => {
-    const res = await axios.post("/entries", JSON.stringify({ values, user }), { withCredentials: true });
-    props.addJournalEntry(res.data);
+    const data = new FormData();
+
+    data.append("values", JSON.stringify(values));
+    data.append("user", JSON.stringify(user));
+
+    images.forEach((img, i) => {
+      data.append(`images[${i}]`, img)
+    })
+    
+    try {
+      const res = await axios.post("/entries", data, { headers: { "Content-Type": "multipart/form-data" } });
+      props.addJournalEntry(res.data);
+    } catch(err) {
+      console.error(err);
+    }
+
   }
 
   const handlePutRequest = (values) => {
@@ -56,7 +70,7 @@ export default function EntryForm(props) {
 
   return (
     <Formik
-      initialValues={ useTestValues() }
+      initialValues={ getInitialValues() }
       validationSchema={Yup.object({
         place: Yup.string()
           .required("Required"),
@@ -74,10 +88,11 @@ export default function EntryForm(props) {
           .max(MAX_IMAGE_AMOUNT, `Only a maximum of ${MAX_IMAGE_AMOUNT} photos can be shared`)
           .required("Required")
       })}
-      onSubmit={ (values, { setSubmitting }) => {
+      onSubmit={ (values, { setSubmitting, resetForm }) => {
         if (props.requestMethod === "post") handlePostRequest(values);
         else if (props.requestMethod === "put") handlePutRequest(values);
         setSubmitting(false);
+        resetForm();
       } }
 
     >
