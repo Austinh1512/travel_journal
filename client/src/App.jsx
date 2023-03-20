@@ -5,7 +5,8 @@ import LandingPage from "./pages/LandingPage"
 import Home from "./pages/Home"
 import LoginForm from "./pages/LoginForm"
 import RegisterForm from "./pages/RegisterForm"
-import NotFound from "./pages/NotFound"
+import PageNotFound from "./pages/PageNotFound"
+import UserNotFound from "./pages/UserNotFound"
 
 export default function App() {
   
@@ -14,15 +15,16 @@ export default function App() {
         <Route element={<PersistLogin />}>
         <Route index element={<LandingPage />} />
           <Route element={<Layout />}>
-            <Route path="/:id" element={<Home />} />
+            <Route path="entries/:id" element={<Home />} />
           </Route>
         </Route>
         
         <Route element={<Layout />}>
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
-        </Route>  
-        <Route path="*" element={<NotFound />} />
+        </Route>
+        <Route path="usernotfound" element={<UserNotFound />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
   )
 }
