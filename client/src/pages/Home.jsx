@@ -1,15 +1,19 @@
 import { useEffect, useState, useContext } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import JournalEntry from "../components/JournalEntry"
 import EntryForm from "../components/EntryForm"
 import Button from "react-bootstrap/Button"
 import axios from "../api/axios"
 import AuthContext from "../context/AuthContext"
+import useAxiosInterceptors from "../hooks/useAxiosInterceptors"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
   const [journalEntries, setJournalEntries] = useState([]);
   const { user } = useContext(AuthContext);
-
+  const axiosAuth = useAxiosInterceptors();
+  const navigate = useNavigate();
+  const params = useParams();
 
   const toggleForm = () => { setShowForm(prev => !prev) }
 
@@ -19,9 +23,14 @@ export default function Home() {
     })
   }
 
-  const deleteJournalEntry = (id) => {
-    axios.delete(`/entries/${id}`)
-      .then(() => { setJournalEntries((prevEntries) => prevEntries.filter(entry => entry._id !== id)); })
+  const deleteJournalEntry = async (id) => {
+    try {
+      await axiosAuth.delete(`/entries/${id}`, { withCredentials: true });
+      setJournalEntries((prevEntries) => prevEntries.filter(entry => entry._id !== id));
+    } catch(err) {
+      console.error(err);
+    }
+    
   }
 
   const updateJournalEntry = (id, updated_entry) => {
@@ -30,8 +39,13 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get(`/entries?id=${user.userID}`);
-      setJournalEntries(res.data);
+      try {
+        const res = await axios.get(`/entries?id=${params.id}`);
+        setJournalEntries(res.data);
+      } catch(err) {
+        navigate("/usernotfound");
+      }
+      
     })()
     }, [])
 
@@ -46,7 +60,7 @@ export default function Home() {
               country: item.country,
               startDate: item.startDate,
               endDate: item.endDate,
-              thumbnail: item.thumbnail,
+              images: item.images,
               description: item.description
             }}
             deleteJournalEntry={() => deleteJournalEntry(item._id)}
@@ -60,9 +74,9 @@ export default function Home() {
         <>
             {displayEntries()}
             <div className="form--container">
-            <Button variant="primary" size="lg" className="form--btn" onClick={toggleForm} href="#create-new-form" >
+            { user.userID === params.id && <Button variant="primary" size="lg" className="form--btn" onClick={toggleForm} href="#create-new-form" >
                 { !showForm ? "Create New +" : "Nevermind :(" }
-            </Button>
+            </Button> }
             { showForm && <EntryForm addJournalEntry={addJournalEntry} requestMethod="post" /> }
             </div>
         </>
