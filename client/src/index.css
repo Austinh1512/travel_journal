@@ -1,3 +1,4 @@
+/* General Classes */
 .bold {
     font-weight: bold;
 }
@@ -9,6 +10,29 @@
     transform: translate(-50%, -50%);
 }
 
+.rounded-btn {
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+}
+
+.btn-on-image {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    opacity: 0.6;
+}
+
+.btn-on-image:hover {
+    color: #F55A5A;
+    opacity: 1;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+/* Thumbnail */
 .thumbnail-container {
     display: flex;
     justify-self: center;
@@ -26,21 +50,7 @@
     width: 150px;
 }
 
-.thumbnail > button {
-    position: absolute;
-    top: 5%;
-    right: 5%;
-    opacity: 0.6;
-    padding: 10px;
-    border: none;
-    border-radius: 50%;
-}
-
-.thumbnail > button:hover {
-    color: #F55A5A;
-    opacity: 1;
-}
-
+/* Landing Page */
 .landing-page--col {
     text-align: center;
 }
@@ -72,6 +82,7 @@
     text-align: center;
 }
 
+/* Navbar */
 .nav {
     background-color: #F55A5A;
     color: white;
@@ -94,15 +105,15 @@
     color: white;
 }
 
+/* Card */
 .card {
     border: none;
 }
 
+
 .card--thumbnail {
-    /* height: 275px;
-    width: 175px; */
-    width: 80%;
-    height: 85%;
+    width: 100%;
+    height: 100%;
 }
 
 .card--location {
@@ -117,6 +128,10 @@
 
 .card--location > a {
     color: #918E9B;
+}
+
+.card-body {
+    height: 100%;
 }
 
 .card--description {
@@ -144,6 +159,39 @@
     display: flex;
 }
 
+/* Card Carousel */
+.carousel, .carousel-inner, .carousel-item {
+    height: 100%;
+}
+
+.carousel-item {
+    position: relative;
+}
+
+.carousel-item > button {
+    display: none;
+}
+
+.card:hover .carousel-item, .carousel-item:hover > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Carousel Modal */
+.carousel-modal {
+    height: 75vh;
+    width: 75vw;
+    overflow: hidden;
+}
+
+.carousel-modal img {
+    height: 90%;
+    width: 100%;
+    object-fit: contain;
+}
+
+/* Entry Form */
 .form--container {
     display: flex;
     flex-direction: column;
