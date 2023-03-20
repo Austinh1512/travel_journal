@@ -15,6 +15,6 @@ router.route("/")
 
 router.route("/:id")
     .put(validateSchema, handleAsync(editEntry))
-    .delete(handleAsync(deleteEntry))
+    .delete(passport.authenticate("jwt", { session: false }), handleAsync(deleteEntry))
 
 module.exports = router;
