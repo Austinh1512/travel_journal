@@ -1,22 +1,23 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { useParams } from "react-router-dom"
+import AuthContext from "../context/AuthContext"
 import Card from "react-bootstrap/Card"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Button from "react-bootstrap/Button"
-import EditModal from "./EditModal"
-import { PencilSquare, Trash, GeoAltFill } from "react-bootstrap-icons"
+import Carousel from "react-bootstrap/Carousel"
+import DeleteModal from "./modals/DeleteModal"
+import EditModal from "./modals/EditModal"
+import CarouselModel from "./modals/CarouselModal"
+import { PencilSquare, Trash, GeoAltFill, ZoomIn } from "react-bootstrap-icons"
 
 
 export default function JournalEntry(props) {
-    const [showModal, setShowModal] = useState(false);
-    const [modalOptions, setModalOptions] = useState({
-        type: "",
-        action: ""
-    });
-
-    const toggleModal = () => {
-        setShowModal((prev) => !prev);
-    }
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showCarouselModal, setShowCarouselModal] = useState(false);
+    const { user } = useContext(AuthContext);
+    const params = useParams();
 
     const formatDate = (date) => {
         const d = new Date(`${date}T00:00`);
@@ -25,21 +26,48 @@ export default function JournalEntry(props) {
 
     }
 
+    const buildCarousel = () => {
+        return props.values.images.map((img, i) => {
+            return (
+                <Carousel.Item key={i}>
+                    <Card.Img variant="left" className="rounded card--thumbnail align-self-center d-block w-100" src={img.url} />
+                    <button type="button" onClick={() => { setShowCarouselModal(!showCarouselModal) }} className="rounded-btn btn-on-image" >
+                        <ZoomIn size={20} />
+                    </button>
+                </Carousel.Item>
+            )
+        })
+    }
+
     return (
         <>
-        { showModal &&  <EditModal toggle={toggleModal} modalOptions={modalOptions} entryID={props.id} initialValues={props.values} />}
+        { showDeleteModal &&  <DeleteModal toggle={() => { setShowDeleteModal(!showDeleteModal) }} delete={props.deleteJournalEntry} />}
+        { showEditModal &&  <EditModal 
+            toggle={() => { setShowEditModal(!showEditModal) }} 
+            update={props.updateJournalEntry} 
+            entryID={props.entryID} 
+            initialValues={props.values} 
+        />}
+        { showCarouselModal && <CarouselModel 
+            toggle={() => { setShowCarouselModal(!showCarouselModal) }}
+            images={props.values.images}
+            place={props.values.place}
+        />}
+        
         <Card className="mt-5">
             <Row className="g-0">
-                <Col md={3} lg={2} className="d-flex flex-column">
-                    <Card.Img variant="left" className="rounded card--thumbnail align-self-center" src={props.values.thumbnail} />
-                    <div className="mt-3 d-flex justify-content-center gap-4">
-                        <Button className="card--btn" onClick={() => { toggleModal(); setModalOptions({ type: "update", action: props.updateJournalEntry }); }}>
+                <Col md={3} lg={2} className="d-flex flex-column"> 
+                    <Carousel indicators={false} controls={false} >
+                        { buildCarousel() }
+                    </Carousel>
+                    { user.userID === params.id && <div className="mt-3 d-flex justify-content-center gap-4">
+                        <Button className="card--btn" onClick={() => { setShowEditModal(!showEditModal) }}>
                             <PencilSquare />
                         </Button>
-                        <Button className="card--btn" onClick={() => { toggleModal(); setModalOptions({ type: "delete", action: props.deleteJournalEntry }); }}>
+                        <Button className="card--btn" onClick={() => { setShowDeleteModal(!showDeleteModal) }}>
                             <Trash />
                         </Button>
-                    </div>
+                    </div> }
                 </Col>
                 <Col md={9} lg={10}>
                     <Card.Body className="ps-4">
