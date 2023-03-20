@@ -10,7 +10,11 @@ const journalEntrySchema = new Schema({
     images: [{
         url: String,
         filename: String
-    }]
+    }],
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }
 })
 
 module.exports = mongoose.model("JournalEntry", journalEntrySchema);
