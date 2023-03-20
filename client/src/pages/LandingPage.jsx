@@ -13,7 +13,7 @@ export default function LandingPage() {
 
     useEffect(() => {
         if (user.accessToken) {
-            navigate(`/${user.userID}`);
+            navigate(`/entries/${user.userID}`);
         }
     }, [user])
 
