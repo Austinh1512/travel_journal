@@ -1,5 +1,6 @@
 const JournalEntry = require("../models/journalEntry");
 const User = require("../models/User");
+const { cloudinary } = require("../config/cloudinary");
 
 module.exports.getEntries = async (req, res) => {
     const { id } = req.query;
@@ -21,6 +22,7 @@ module.exports.addEntry = async (req, res) => {
     const entry = new JournalEntry(values);
     entry.images = req.files.map(file => ({ url: file.path, filename: file.filename }))
     found_user.journal_entries.push(entry);
+    entry.user = found_user._id;
     await found_user.save();
     await entry.save();
     res.status(200).send(entry);
@@ -33,7 +35,11 @@ module.exports.editEntry = async (req, res) => {
 }
 
 module.exports.deleteEntry = async (req, res) => {
-    await JournalEntry.findByIdAndDelete(req.params.id);
+    const doc = await JournalEntry.findByIdAndDelete(req.params.id).populate("user");
+    await User.findByIdAndUpdate(doc.user._id, { $pull: { journal_entries: doc._id } });
+    doc.images.forEach(img => {
+        cloudinary.uploader.destroy(img.filename);
+    })
     res.sendStatus(200);
 }
 
