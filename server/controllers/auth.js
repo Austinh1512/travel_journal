@@ -4,6 +4,17 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const extractJwtFromCookie = require("../utils/extractJwtFromCookie");
 
+module.exports.getUserInfo = async ( req, res ) => {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+
+    if (!user) {
+        return res.status(404).json({ "error": "User does not exist" });
+    }
+
+    res.status(200).json({ "username": user.username, "userID": user._id });
+}
 
 module.exports.handleRegister = async ( req, res ) => {
     const { username, password } = req.body;
