@@ -10,7 +10,7 @@ import useAxiosInterceptors from "../hooks/useAxiosInterceptors"
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
   const [journalEntries, setJournalEntries] = useState([]);
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const axiosAuth = useAxiosInterceptors();
   const navigate = useNavigate();
   const params = useParams();
@@ -40,7 +40,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get(`/entries?id=${params.id}`);
+        const res = await axios.get(`/entries/${params.id}`);
         setJournalEntries(res.data);
       } catch(err) {
         navigate("/usernotfound");

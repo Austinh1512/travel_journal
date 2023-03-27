@@ -3,7 +3,7 @@ const User = require("../models/User");
 const { cloudinary } = require("../config/cloudinary");
 
 module.exports.getEntries = async (req, res) => {
-    const { id } = req.query;
+    const { id } = req.params;
     const user = await User.findOne({ _id: id }).populate("journal_entries");
 
     if (!user) {
