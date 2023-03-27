@@ -1,13 +1,21 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Container, Navbar, Nav, Form, Button } from "react-bootstrap"
 import AuthContext from "../context/AuthContext"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import axios from "../api/axios"
-import { GlobeAmericas } from "react-bootstrap-icons"
+import { GlobeAmericas, Share } from "react-bootstrap-icons"
+import ShareModal from "./modals/ShareModal"
 
 export default function NavBar() {
+    const [navHeaderText, setNavHeaderText] = useState("");
+    const [showShareModal, setShowShareModal] = useState(false);
     const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const params = useParams();
+
+    const handleShare = () => {
+        setShowShareModal(!showShareModal);
+    }
 
     const handleLogout = async (e) => {
         e.preventDefault();
@@ -20,27 +28,47 @@ export default function NavBar() {
         navigate("/", { replace: true });
     }
 
+    useEffect(() => {
+        (async () => {
+            if (user.userID === params.id) {
+                setNavHeaderText("My Travel Journal");
+            }
+            else {
+                const res = await axios.get(`/auth/${params.id}`);
+                setNavHeaderText(`${res.data.username}'s Travel Journal`);
+            }
+        })()
+    }, [])
+
     return (
-        <Navbar className="nav">
-            <Container className="justify-content-center">
-                <Navbar.Brand href={`/${user.userID}`} className="d-flex align-items-center gap-2">
-                    <GlobeAmericas color="white"/>
-                    <span className="fs-6 py-2">My Travel Journal</span>
-                </Navbar.Brand>
-                <Nav className="ms-auto">
-                    { !user.username ? 
-                        <>
-                            <Nav.Link href="/login" className="nav--button">Login</Nav.Link>
-                            <Nav.Link href="/register" className="nav--button">Register</Nav.Link>
-                        </>
-                         :
-                            <Form onSubmit={handleLogout}>
-                                <Button type="submit" className="nav--button">Logout</Button>
-                            </Form>
-                    }
-                    
-                </Nav>
-            </Container>
-        </Navbar>
+        <>
+            { showShareModal && <ShareModal toggle={() => setShowShareModal(!showShareModal)} /> }
+            <Navbar className="nav">
+                <Container className="justify-content-center">
+                    <Navbar.Brand href={`/entries/${user.userID}`} className="d-flex align-items-center gap-2">
+                        <GlobeAmericas color="white"/>
+                        <span className="fs-6 py-2">{ navHeaderText }</span>
+                    </Navbar.Brand>
+                    <Nav className="ms-auto">
+                        { !user.username ? 
+                            <>
+                                <Nav.Link href="/login" className="nav--button">Login</Nav.Link>
+                                <Nav.Link href="/register" className="nav--button">Register</Nav.Link>
+                            </>
+                            :
+                                <div className="d-flex align-items-center gap-3">
+                                    { user.userID === params.id && <Share color="white" onClick={handleShare} className="clickable" /> }
+                                    <Form onSubmit={handleLogout}>
+                                        <Button type="submit" className="nav--button">Logout</Button>
+                                    </Form>
+                                </div>
+                                
+                        }
+                        
+                    </Nav>
+                </Container>
+            </Navbar>
+        </>
+        
     )
 }
