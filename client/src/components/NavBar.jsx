@@ -30,7 +30,7 @@ export default function NavBar() {
 
     useEffect(() => {
         (async () => {
-            if (user.userID === params.id) {
+            if (user.userID === params.id || !params.id) {
                 setNavHeaderText("My Travel Journal");
             }
             else {
@@ -38,7 +38,7 @@ export default function NavBar() {
                 setNavHeaderText(`${res.data.username}'s Travel Journal`);
             }
         })()
-    }, [])
+    }, [user])
 
     return (
         <>
