@@ -7,7 +7,7 @@ module.exports.getEntries = async (req, res) => {
     const user = await User.findOne({ _id: id }).populate("journal_entries");
 
     if (!user) {
-        return res.status(404).json({ "error": "Invalid credentials" });
+        return res.status(404).json({ "error": "Page does not exist." });
     }
 
     res.status(200).send(user.journal_entries);
