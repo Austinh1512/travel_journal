@@ -1,18 +1,26 @@
+import { Link, useNavigate } from "react-router-dom"
+import { useState, useContext } from "react"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
+import Alert from "react-bootstrap/Alert"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import axios from "../api/axios"
-import { Link, useNavigate } from "react-router-dom"
-import { useContext } from "react"
 import AuthContext from "../context/AuthContext"
+import useErrorHandler from "../hooks/useErrorHandler"
 
 export default function RegisterForm() {
-    const { setUser } = useContext(AuthContext);
+    const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const handleError = useErrorHandler();
+
     return (
-        <>
+        <div className="d-flex flex-column">  
             <h1 className="mt-5">Register</h1>
+            <Alert variant="danger" show={showErrorAlert} dismissible onClose={() => setShowErrorAlert(false)} className="align-self-center" >
+                <p>{user.error}</p>
+            </Alert>
             <Formik
                 initialValues={{
                     username: "",
@@ -28,13 +36,17 @@ export default function RegisterForm() {
                         .required("Please re-enter your password")
                         .oneOf([Yup.ref("password"), null], "Passwords must match")
                 })}
-                onSubmit={ async (values, { resetForm }) => {
+                onSubmit={ async (values) => {
                     try {
                         const res = await axios.post("/auth/register", JSON.stringify(values), { headers: { "Content-Type": "application/json" } });
-                        setUser(res.data);
+                        setUser({
+                            ...res.data,
+                            success: "Registration successful!"
+                        });
                         navigate(`/entries/${res.data.userID}`, { replace: true });
                     } catch (err) {
-                        console.error(err);
+                        handleError(err);
+                        setShowErrorAlert(true);
                     }
                     
                 } }
@@ -96,6 +108,6 @@ export default function RegisterForm() {
                     </Form>
                 )}
             </Formik>
-        </>
+        </div>
     )
 }

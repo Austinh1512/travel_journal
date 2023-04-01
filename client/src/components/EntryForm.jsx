@@ -1,11 +1,12 @@
+import { useState, useContext, useEffect } from "react"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import Thumbnail from "./Thumbnail"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import useAxiosInterceptors from "../hooks/useAxiosInterceptors"
-import { useState, useContext, useEffect } from "react"
 import AuthContext from "../context/AuthContext"
+import useErrorHandler from "../hooks/useErrorHandler"
 
 const MAX_IMAGE_AMOUNT = 10;
 
@@ -13,6 +14,7 @@ export default function EntryForm(props) {
   const { user } = useContext(AuthContext);
   const [ images, setImages ] = useState([]);
   const axios = useAxiosInterceptors();
+  const handleError = useErrorHandler();
 
   const handlePostRequest = async (values) => {
     const data = new FormData();
@@ -28,15 +30,22 @@ export default function EntryForm(props) {
       const res = await axios.post("/entries", data, { headers: { "Content-Type": "multipart/form-data" } });
       props.addJournalEntry(res.data);
     } catch(err) {
-      console.error(err);
+      handleError(err);
     }
 
   }
 
-  const handlePutRequest = (values) => {
-    axios.put(`/entries/${props.entryID}`, JSON.stringify(values))
-    props.updateJournalEntry(props.entryID, res.data);
-    props.toggleModal();
+  const handlePutRequest = async (values) => {
+    try {
+      const res = await axios.put(`/entries/${props.entryID}`, JSON.stringify(values), { headers: {
+        "Content-Type": "application/json"
+      } });
+      props.updateJournalEntry(props.entryID, res.data);
+    } catch (err) {
+      handleError(err);
+    } finally {
+      props.toggleModal();
+    }
   }
 
   const getInitialValues = () => {

@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import axios from "../api/axios"
 import { GlobeAmericas, Share } from "react-bootstrap-icons"
 import ShareModal from "./modals/ShareModal"
+import useErrorHandler from "../hooks/useErrorHandler"
 
 export default function NavBar() {
     const [navHeaderText, setNavHeaderText] = useState("");
@@ -12,6 +13,7 @@ export default function NavBar() {
     const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const params = useParams();
+    const handleError = useErrorHandler();
 
     const handleShare = () => {
         setShowShareModal(!showShareModal);
@@ -19,13 +21,20 @@ export default function NavBar() {
 
     const handleLogout = async (e) => {
         e.preventDefault();
-        await axios.get("/auth/logout", { withCredentials: true });
-        setUser({
-            username: "",
-            accessToken: "",
-            userID: ""
-        });
-        navigate("/", { replace: true });
+        try {
+            await axios.get("/auth/logout", { withCredentials: true });
+            setUser({
+                username: "",
+                accessToken: "",
+                userID: "",
+                error: "",
+                success: ""
+            });
+            navigate("/", { replace: true });
+        } catch(err) {
+            handleError(err);
+            navigate(`/entries/${user.userID}`);
+        }
     }
 
     useEffect(() => {

@@ -3,19 +3,21 @@ import { Oval } from "react-loader-spinner"
 import { useState, useEffect, useContext } from "react"
 import useRefreshToken from "../hooks/useRefreshToken"
 import AuthContext from "../context/AuthContext"
+import useErrorHandler from "../hooks/useErrorHandler"
 
 export default function PersistLogin() {
     const [isLoading, setIsLoading] = useState(true);
+    const { user } = useContext(AuthContext);
     const refresh = useRefreshToken();
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    const handleError = useErrorHandler();
 
     useEffect(() => {
         const verifyRefreshToken = async () => {
             try {
                 await refresh();
             } catch(err) {
-                console.error(err);
+                handleError(err);
                 navigate("/");
             } finally {
                 setIsLoading(false);
