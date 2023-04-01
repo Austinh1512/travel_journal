@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { Clipboard } from "react-bootstrap-icons"
+import CustomTooltip from "../CustomTooltip"
 
 export default function ShareModal({ toggle }) {
     const { user } = useContext(AuthContext);
@@ -20,9 +21,11 @@ export default function ShareModal({ toggle }) {
             </Modal.Header>
             <Modal.Body className="d-flex gap-2">
                 <Form.Control type="text" value={URL} readOnly />
-                <Button onClick={copyToClipboard} className="d-flex justify-content-center align-items-center card--btn">
-                    <Clipboard />
-                </Button>
+                <CustomTooltip id="tooltip-share" placement="top" text="Copy URL" >
+                    <Button onClick={copyToClipboard} className="d-flex justify-content-center align-items-center card--btn">
+                        <Clipboard />
+                    </Button>
+                </CustomTooltip>
             </Modal.Body>
         </Modal>
     )

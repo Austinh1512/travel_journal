@@ -10,6 +10,7 @@ import DeleteModal from "./modals/DeleteModal"
 import EditModal from "./modals/EditModal"
 import CarouselModel from "./modals/CarouselModal"
 import { PencilSquare, Trash, GeoAltFill, ZoomIn } from "react-bootstrap-icons"
+import CustomTooltip from "./CustomTooltip"
 
 
 export default function JournalEntry(props) {
@@ -61,12 +62,17 @@ export default function JournalEntry(props) {
                         { buildCarousel() }
                     </Carousel>
                     { user.userID === params.id && <div className="mt-3 d-flex justify-content-center gap-4">
-                        <Button className="card--btn" onClick={() => { setShowEditModal(!showEditModal) }}>
-                            <PencilSquare />
-                        </Button>
-                        <Button className="card--btn" onClick={() => { setShowDeleteModal(!showDeleteModal) }}>
-                            <Trash />
-                        </Button>
+                        <CustomTooltip id="tooltip-edit" placement="top" text="Edit Entry" >
+                            <Button className="card--btn" onClick={() => { setShowEditModal(!showEditModal) }}>
+                                <PencilSquare />
+                            </Button>
+                        </CustomTooltip>
+                        
+                        <CustomTooltip id="tooltip-delete" placement="top" text="Delete Entry" >
+                            <Button className="card--btn" onClick={() => { setShowDeleteModal(!showDeleteModal) }}>
+                                <Trash />
+                            </Button>
+                        </CustomTooltip>
                     </div> }
                 </Col>
                 <Col md={9} lg={10}>
