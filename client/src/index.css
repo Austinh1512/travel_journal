@@ -32,6 +32,11 @@
     cursor: pointer;
 }
 
+/* Alert */
+.alert {
+    width: 50%;
+}
+
 /* Thumbnail */
 .thumbnail-container {
     display: flex;
