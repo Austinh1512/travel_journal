@@ -80,7 +80,7 @@ export default function JournalEntry(props) {
                         <div className="card--location">
                             <GeoAltFill color="#F55A5A" />
                             <p>{props.values.country.toUpperCase()}</p>
-                            <Card.Link href="#" className="ms-4">View on Google Maps</Card.Link>
+                            <Card.Link href={`https://www.google.com/maps/search/${props.values.place}`} target="_blank" className="ms-4">View on Google Maps</Card.Link>
                         </div>
                         <Card.Title className="display-5 bold">{props.values.place}</Card.Title>
                         <Card.Subtitle className="my-4 ps-1">{formatDate(props.values.startDate)} - {formatDate(props.values.endDate)}</Card.Subtitle>
