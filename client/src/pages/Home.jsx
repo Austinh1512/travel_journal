@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import JournalEntry from "../components/JournalEntry"
 import EntryForm from "../components/EntryForm"
+import PaginationNav from "../components/modals/PaginationNav"
 import Button from "react-bootstrap/Button"
 import Alert from "react-bootstrap/Alert"
 import axios from "../api/axios"
@@ -14,6 +15,8 @@ export default function Home() {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [journalEntries, setJournalEntries] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(3);
   const { user, setUser } = useContext(AuthContext);
   const axiosAuth = useAxiosInterceptors();
   const navigate = useNavigate();
@@ -49,27 +52,9 @@ export default function Home() {
     setJournalEntries(prevEntries => prevEntries.map(entry => entry._id === id ? updated_entry : entry));
   }
 
-  const displayEntries = () => {
-    if (journalEntries.length) {
-      return journalEntries.map(item => {
-        return <JournalEntry 
-            key={item._id}
-            id={item._id}
-            values={{
-              place: item.place,
-              country: item.country,
-              startDate: item.startDate,
-              endDate: item.endDate,
-              images: item.images,
-              description: item.description
-            }}
-            deleteJournalEntry={() => deleteJournalEntry(item._id)}
-            updateJournalEntry={updateJournalEntry}
-          />
-      })
-    } 
-  }
+  
 
+  //Request journal entries
   useEffect(() => {
     (async () => {
       try {
@@ -95,6 +80,34 @@ export default function Home() {
     }
   }, [])
 
+  //Get entries for current page
+  const lastIndexOfPage = currentPage * postsPerPage;
+  const firstIndexOfPage = lastIndexOfPage - postsPerPage;
+  const currentEntries = journalEntries.slice(firstIndexOfPage, lastIndexOfPage);
+
+  const displayEntries = () => {
+    if (currentEntries.length) {
+      return currentEntries.map(item => {
+        return <JournalEntry 
+            key={item._id}
+            id={item._id}
+            values={{
+              place: item.place,
+              country: item.country,
+              startDate: item.startDate,
+              endDate: item.endDate,
+              images: item.images,
+              description: item.description
+            }}
+            deleteJournalEntry={() => deleteJournalEntry(item._id)}
+            updateJournalEntry={updateJournalEntry}
+          />
+      })
+    } 
+  }
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <div className="d-flex flex-column">
           <Alert variant="danger" show={showErrorAlert} onClose={() => setShowErrorAlert(!showErrorAlert)} dismissible className="mt-3 align-self-center" >
@@ -108,6 +121,7 @@ export default function Home() {
               </div>
           </Alert>
           {displayEntries()}
+          <PaginationNav totalPosts={journalEntries.length} postsPerPage={postsPerPage} paginate={paginate} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           <div className="form--container">
           { user.userID === params.id && <Button variant="primary" size="lg" className="form--btn" onClick={toggleForm} href="#create-new-form" >
               { !showForm ? "Create New +" : "Nevermind :(" }

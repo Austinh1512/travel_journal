@@ -218,3 +218,13 @@
 .form-date-container {
     width: 48%;
 }
+
+/* Pagination */
+.pagination .active .page-link {
+    background-color: #F55A5A;
+    border-color: #F55A5A;
+}
+
+.pagination .active .page-link > .pagination--text {
+    color: white;
+}
