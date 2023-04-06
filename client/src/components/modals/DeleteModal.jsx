@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button"
 
 export default function DeleteModal(props) {
     return (
-            <Modal show onHide={props.toggle}>
+            <Modal show={props.show} onHide={props.toggle}>
                 <Modal.Header closeButton>
                     <Modal.Title>Warning!</Modal.Title>
                 </Modal.Header>

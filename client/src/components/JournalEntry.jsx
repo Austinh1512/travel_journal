@@ -42,18 +42,20 @@ export default function JournalEntry(props) {
 
     return (
         <>
-        { showDeleteModal &&  <DeleteModal toggle={() => { setShowDeleteModal(!showDeleteModal) }} delete={props.deleteJournalEntry} />}
-        { showEditModal &&  <EditModal 
+        <DeleteModal show={showDeleteModal} toggle={() => { setShowDeleteModal(!showDeleteModal) }} delete={props.deleteJournalEntry} />
+        <EditModal
+            show={showEditModal}
             toggle={() => { setShowEditModal(!showEditModal) }} 
             update={props.updateJournalEntry} 
             entryID={props.entryID} 
             initialValues={props.values} 
-        />}
-        { showCarouselModal && <CarouselModel 
+        />
+        <CarouselModel 
+            show={showCarouselModal}
             toggle={() => { setShowCarouselModal(!showCarouselModal) }}
             images={props.values.images}
             place={props.values.place}
-        />}
+        />
         
         <Card className="mt-5">
             <Row className="g-0">

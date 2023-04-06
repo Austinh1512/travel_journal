@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button"
 import { Clipboard } from "react-bootstrap-icons"
 import CustomTooltip from "../CustomTooltip"
 
-export default function ShareModal({ toggle }) {
+export default function ShareModal({ show, toggle }) {
     const { user } = useContext(AuthContext);
     const URL = `http://localhost:5173/entries/${user.userID}`;
 
@@ -15,7 +15,7 @@ export default function ShareModal({ toggle }) {
     }
 
     return (
-        <Modal show onHide={toggle}>
+        <Modal show={show} onHide={toggle}>
             <Modal.Header closeButton>
                 <Modal.Title>Share Your Journey</Modal.Title>
             </Modal.Header>

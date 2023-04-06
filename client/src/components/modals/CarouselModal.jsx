@@ -13,7 +13,7 @@ export default function CarouselModal(props) {
     }
 
     return (
-        <Modal show onHide={props.toggle} className="carousel-modal centered" >
+        <Modal show={props.show} onHide={props.toggle} className="carousel-modal centered" >
             <Modal.Header closeButton>
                 <Modal.Title>{props.place}</Modal.Title>
             </Modal.Header>

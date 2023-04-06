@@ -3,7 +3,7 @@ import EntryForm from "../EntryForm"
 
 export default function EditModal(props) {
     return (
-            <Modal show onHide={props.toggle}>
+            <Modal show={props.show} onHide={props.toggle}>
                 <Modal.Header closeButton>
                     <Modal.Title>Update Entry:</Modal.Title>
                 </Modal.Header>

@@ -51,7 +51,7 @@ export default function NavBar() {
 
     return (
         <>
-            { showShareModal && <ShareModal toggle={() => setShowShareModal(!showShareModal)} /> }
+            <ShareModal show={showShareModal} toggle={() => setShowShareModal(!showShareModal)} />
             <Navbar className="nav">
                 <Container className="justify-content-center">
                     <Navbar.Brand href={`/entries/${user.userID}`} className="d-flex align-items-center gap-2">
