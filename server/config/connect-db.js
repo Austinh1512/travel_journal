@@ -13,4 +13,4 @@ const connectDB = () => {
     mongoose.set('strictQuery', false);
 }
 
-module.exports = connectDB
+module.exports = connectDB;
