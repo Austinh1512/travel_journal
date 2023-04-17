@@ -22,7 +22,7 @@ export default function NavBar() {
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-            await axios.get("/auth/logout", { withCredentials: true });
+            await axios.get("/auth/logout");
             setUser({
                 username: "",
                 accessToken: "",
@@ -33,7 +33,7 @@ export default function NavBar() {
             navigate("/", { replace: true });
         } catch(err) {
             handleError(err);
-            navigate(`/entries/${user.userID}`);
+            navigate(`/entries/${user.userID}`, { replace: true });
         }
     }
 
@@ -43,8 +43,12 @@ export default function NavBar() {
                 setNavHeaderText("My Travel Journal");
             }
             else {
-                const res = await axios.get(`/auth/${params.id}`);
-                setNavHeaderText(`${res.data.username}'s Travel Journal`);
+                //check if :id can be casted to ObjectID before being sent to server
+                if (params.id.length === 24) {
+                    const res = await axios.get(`/auth/${params.id}`);
+                    setNavHeaderText(`${res.data.username}'s Travel Journal`);
+                }
+                
             }
         })()
     }, [user])
