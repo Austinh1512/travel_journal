@@ -12,9 +12,10 @@ const upload = multer({ storage });
 router.route("/")
     .post(passport.authenticate("jwt", { session: false }), upload.any(), validateSchema, handleAsync(addEntry))
 
+router.route("/:userID").get(handleAsync(getEntries));
+    
 router.route("/:id")
-    .get(handleAsync(getEntries))
-    .put(validateSchema, handleAsync(editEntry))
+    .put(passport.authenticate("jwt", { session: false }), validateSchema, handleAsync(editEntry))
     .delete(passport.authenticate("jwt", { session: false }), handleAsync(deleteEntry))
 
 module.exports = router;
