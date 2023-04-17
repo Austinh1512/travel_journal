@@ -6,7 +6,6 @@ import Home from "./pages/Home"
 import LoginForm from "./pages/LoginForm"
 import RegisterForm from "./pages/RegisterForm"
 import PageNotFound from "./pages/PageNotFound"
-import UserNotFound from "./pages/UserNotFound"
 
 export default function App() {
   
@@ -23,7 +22,6 @@ export default function App() {
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
         </Route>
-        <Route path="usernotfound" element={<UserNotFound />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
   )
