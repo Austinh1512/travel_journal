@@ -1,24 +1,24 @@
 import { useEffect, useState, useContext } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import JournalEntry from "../components/JournalEntry"
-import EntryForm from "../components/EntryForm"
+import NewEntryForm from "../components/forms/NewEntryForm"
 import PaginationNav from "../components/PaginationNav"
+import CustomAlert from "../components/CustomAlert"
 import Button from "react-bootstrap/Button"
-import Alert from "react-bootstrap/Alert"
-import axios from "../api/axios"
 import AuthContext from "../context/AuthContext"
+import AlertContext from "../context/AlertContext"
 import useAxiosInterceptors from "../hooks/useAxiosInterceptors"
 import useErrorHandler from "../hooks/useErrorHandler"
 
 export default function Home() {
-  const [showErrorAlert, setShowErrorAlert] = useState(false);
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [journalEntries, setJournalEntries] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
-  const { user, setUser } = useContext(AuthContext);
-  const axiosAuth = useAxiosInterceptors();
+  const { user } = useContext(AuthContext);
+  const { alert, setAlert } = useContext(AlertContext);
+  const axios = useAxiosInterceptors();
   const navigate = useNavigate();
   const params = useParams();
   const handleError = useErrorHandler();
@@ -33,16 +33,13 @@ export default function Home() {
 
   const deleteJournalEntry = async (id) => {
     try {
-      await axiosAuth.delete(`/entries/${id}`, { withCredentials: true });
-      setUser(prev => ({
-        ...prev,
-        success: "Successfully deleted entry."
-      }))
+      const res = await axios.delete(`/entries/${id}`, { withCredentials: true });
+      setAlert(res.data);
       setJournalEntries((prevEntries) => prevEntries.filter(entry => entry._id !== id));
-      setShowSuccessAlert(true);
+      setShowAlert(true);
     } catch(err) {
         handleError(err);
-        setShowErrorAlert(true);
+        setShowAlert(true);
         navigate(`/entries/${user.userID}`);
     }
     
@@ -62,8 +59,9 @@ export default function Home() {
         setJournalEntries(res.data);
       } catch(err) {
         handleError(err);
-        setShowErrorAlert(true);
-        navigate(`/entries/${user.userID}`);
+        setShowAlert(true);
+        if(Boolean(user.userID)) navigate(`/entries/${user.userID}`, { replace: true });
+        else navigate("/");
       }
       
     })()
@@ -71,14 +69,8 @@ export default function Home() {
 
   //Check for errors coming from other pages
   useEffect(() => {
-    if (user.success) {
-      setShowSuccessAlert(true);
-    }
-
-    if (user.error) {
-      setShowErrorAlert(true);
-    }
-  }, [])
+    if (Boolean(alert.type)) setShowAlert(true);
+  }, [alert])
 
   //Get entries for current page
   const lastIndexOfPage = currentPage * postsPerPage;
@@ -110,23 +102,14 @@ export default function Home() {
 
     return (
         <div className="d-flex flex-column">
-          <Alert variant="danger" show={showErrorAlert} onClose={() => setShowErrorAlert(!showErrorAlert)} dismissible className="mt-3 align-self-center" >
-              <div className="d-flex justify-content-center align-items-center" >
-                <p>{ user.error }</p>
-              </div>
-          </Alert>
-          <Alert variant="success" show={showSuccessAlert} onClose={() => setShowSuccessAlert(!showSuccessAlert)} dismissible className="mt-3 align-self-center" >
-              <div className="d-flex justify-content-center align-items-center" >
-                <p>{ user.success }</p>
-              </div>
-          </Alert>
+          <CustomAlert show={showAlert} dismiss={() => setShowAlert(false)} />
           {displayEntries()}
           <PaginationNav totalPosts={journalEntries.length} postsPerPage={postsPerPage} paginate={paginate} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           <div className="form--container">
           { user.userID === params.id && <Button variant="primary" size="lg" className="form--btn" onClick={toggleForm} href="#create-new-form" >
               { !showForm ? "Create New +" : "Nevermind :(" }
           </Button> }
-          { showForm && <EntryForm addJournalEntry={addJournalEntry} requestMethod="post" /> }
+          { showForm && <NewEntryForm addJournalEntry={addJournalEntry} requestMethod="post" /> }
           </div>
         </div>
     )

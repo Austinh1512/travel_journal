@@ -1,15 +1,15 @@
 import { useContext } from "react"
-import AuthContext from "../context/AuthContext"
+import AlertContext from "../context/AlertContext"
 
 export default function useErrorHandler() {
-    const { setUser } = useContext(AuthContext);
+    const { setAlert } = useContext(AlertContext);
 
     const handleError = (err) => {
         const { response } = err;
-        setUser(prev => ({
-            ...prev,
-            error: response.data.error
-        }))
+        setAlert({
+            type: "error",
+            message: response?.data?.error
+        });
     }
 
     return handleError;

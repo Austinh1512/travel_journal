@@ -2,25 +2,25 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState, useContext } from "react"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
-import Alert from "react-bootstrap/Alert"
+import CustomAlert from "../components/CustomAlert"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import axios from "../api/axios"
 import AuthContext from "../context/AuthContext"
+import AlertContext from "../context/AlertContext"
 import useErrorHandler from "../hooks/useErrorHandler"
 
 export default function RegisterForm() {
-    const [showErrorAlert, setShowErrorAlert] = useState(false);
-    const { user, setUser } = useContext(AuthContext);
+    const [showAlert, setShowAlert] = useState(false);
+    const { setUser } = useContext(AuthContext);
+    const { setAlert } = useContext(AlertContext);
     const navigate = useNavigate();
     const handleError = useErrorHandler();
 
     return (
         <div className="d-flex flex-column">  
             <h1 className="mt-5">Register</h1>
-            <Alert variant="danger" show={showErrorAlert} dismissible onClose={() => setShowErrorAlert(false)} className="align-self-center" >
-                <p>{user.error}</p>
-            </Alert>
+            <CustomAlert show={showAlert} dismiss={() => setShowAlert(false)} />
             <Formik
                 initialValues={{
                     username: "",
@@ -39,14 +39,15 @@ export default function RegisterForm() {
                 onSubmit={ async (values) => {
                     try {
                         const res = await axios.post("/auth/register", JSON.stringify(values), { headers: { "Content-Type": "application/json" } });
-                        setUser({
-                            ...res.data,
-                            success: "Registration successful!"
+                        setUser(res.data);
+                        setAlert({
+                            type: "success",
+                            message: "Registration successful!"
                         });
                         navigate(`/entries/${res.data.userID}`, { replace: true });
                     } catch (err) {
                         handleError(err);
-                        setShowErrorAlert(true);
+                        setShowAlert(true);
                     }
                     
                 } }
