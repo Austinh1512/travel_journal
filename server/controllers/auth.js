@@ -3,9 +3,12 @@ const login = require("../utils/login");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const extractJwtFromCookie = require("../utils/extractJwtFromCookie");
+const mongoose = require("mongoose");
 
 module.exports.getUserInfo = async ( req, res ) => {
     const { id } = req.params;
+
+    if (!mongoose.isObjectIdOrHexString(id)) return res.status(500).json({ "error": "Not a valid user ID" });
 
     const user = await User.findById(id);
 
