@@ -1,5 +1,5 @@
 import Modal from "react-bootstrap/Modal"
-import EntryForm from "../EntryForm"
+import EditEntryForm from "../forms/EditEntryForm"
 
 export default function EditModal(props) {
     return (
@@ -8,7 +8,7 @@ export default function EditModal(props) {
                     <Modal.Title>Update Entry:</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="d-flex justify-content-center">
-                    <EntryForm requestMethod="put" entryID={props.entryID} initialValues={props.initialValues} updateJournalEntry={props.update} toggleModal={props.toggle} />
+                   <EditEntryForm initialValues={props.initialValues} toggleModal={props.toggle} entryID={props.entryID} updateJournalEntry={props.updateJournalEntry} />
                 </Modal.Body>
             </Modal>
     )

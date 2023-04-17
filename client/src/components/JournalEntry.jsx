@@ -46,8 +46,8 @@ export default function JournalEntry(props) {
         <EditModal
             show={showEditModal}
             toggle={() => { setShowEditModal(!showEditModal) }} 
-            update={props.updateJournalEntry} 
-            entryID={props.entryID} 
+            updateJournalEntry={props.updateJournalEntry} 
+            entryID={props.id} 
             initialValues={props.values} 
         />
         <CarouselModel 
