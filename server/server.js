@@ -31,8 +31,12 @@ app.use("/api/entries", entryRouter);
 const authRouter = require("./routes/auth");
 app.use("/api/auth", authRouter);
 
+app.use("*", (req, res) => {
+    res.status(404).json({ "error": "Page does not exist" })
+})
+
 app.use((err, req, res, next) => {
-    res.status(500).json({"error": err.message});
+    res.status(500).json({ "error": err.message });
 })
 
 app.listen(5000, () => { console.log("Server running...") });
