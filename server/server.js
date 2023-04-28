@@ -10,6 +10,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./config/connect-db");
 const passport = require("passport");
 const setHeaders = require("./middleware/setHeaders");
+const mongoSanitize = require("express-mongo-sanitize");
 
 //Connect to Mongo
  connectDB();
@@ -20,6 +21,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
+app.use(mongoSanitize());
 
 //Passport jwt strategy
 require("./config/passport-jwt");
