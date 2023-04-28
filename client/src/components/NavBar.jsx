@@ -58,7 +58,7 @@ export default function NavBar() {
             <ShareModal show={showShareModal} toggle={() => setShowShareModal(!showShareModal)} />
             <Navbar className="nav">
                 <Container className="justify-content-center">
-                    <Navbar.Brand href={`/entries/${user.userID}`} className="d-flex align-items-center gap-2">
+                    <Navbar.Brand href={user.userID ? `/entries/${user.userID}` : "/"} className="d-flex align-items-center gap-2">
                         <GlobeAmericas color="white"/>
                         <span className="fs-6 py-2">{ navHeaderText }</span>
                     </Navbar.Brand>
