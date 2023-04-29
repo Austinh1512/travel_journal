@@ -5,7 +5,7 @@ const validateUserSchema = async (req, res, next) => {
         await userSchema.validateAsync(req.body);
         next();
     } catch(err) {
-        res.status(400).json({"error": error.details.map(err => err.message).join(",")});
+        res.status(400).json({"error": err.details.map(err => err.message).join(",")});
     }
 }
 
