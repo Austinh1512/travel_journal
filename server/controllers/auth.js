@@ -94,12 +94,12 @@ module.exports.handleLogout = async ( req, res ) => {
     const user = await User.findOne({ refreshToken: token });
 
     if (!user) {
-        res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
+        res.clearCookie("jwt", { httpOnly: false, secure: true, sameSite: "None" });
         return res.sendStatus(204);
     }
 
     user.refreshToken = "";
     await user.save();
-    res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
+    res.clearCookie("jwt", { httpOnly: false, secure: true, sameSite: "None" });
     res.sendStatus(200);
 }
