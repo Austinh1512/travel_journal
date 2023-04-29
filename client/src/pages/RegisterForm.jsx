@@ -37,8 +37,13 @@ export default function RegisterForm() {
                         .oneOf([Yup.ref("password"), null], "Passwords must match")
                 })}
                 onSubmit={ async (values) => {
+                    const payload = {
+                        username: values.username,
+                        password: values.password
+                    }
+                    
                     try {
-                        const res = await axios.post("/auth/register", JSON.stringify(values), { headers: { "Content-Type": "application/json" } });
+                        const res = await axios.post("/auth/register", JSON.stringify(payload), { headers: { "Content-Type": "application/json" } });
                         setUser(res.data);
                         setAlert({
                             type: "success",
