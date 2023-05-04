@@ -10,10 +10,12 @@ import AlertContext from "../../context/AlertContext"
 import useErrorHandler from "../../hooks/useErrorHandler"
 
 const MAX_IMAGE_AMOUNT = 10;
+const DESCRIPTION_CHAR_LIMIT = 500;
 
 export default function EntryForm(props) {
   const { user } = useContext(AuthContext);
   const { setAlert } = useContext(AlertContext);
+  const [ descriptionCharLeft, setDescriptionCharLeft ] = useState(DESCRIPTION_CHAR_LIMIT);
   const [ images, setImages ] = useState([]);
   const axios = useAxiosInterceptors();
   const handleError = useErrorHandler();
@@ -50,6 +52,7 @@ export default function EntryForm(props) {
           .required("Required")
           .min(Yup.ref("startDate"), "Date must be after start date"),
         description: Yup.string()
+        .max(DESCRIPTION_CHAR_LIMIT, `Only a maximum of ${DESCRIPTION_CHAR_LIMIT} characters allowed`)
           .required("Required"),
         images: Yup.array()
           .min(1, "Share at least 1 photo from your journey")
@@ -85,6 +88,11 @@ export default function EntryForm(props) {
         useEffect(() => {
           formik.setFieldValue("images", images);
         }, [images])
+
+        const handleDescriptionChange = (e) => {
+          formik.setFieldValue("description", e.target.value );
+          setDescriptionCharLeft(DESCRIPTION_CHAR_LIMIT - e.target.value.length);
+        }
 
         return <Form noValidate className='mt-4 d-flex flex-column justify-content-center' id="create-new-form" encType="multipart/form-data" onSubmit={formik.handleSubmit} >
           <Form.Group className="mb-3" controlId='formLocation'>
@@ -157,12 +165,12 @@ export default function EntryForm(props) {
           
 
           <Form.Group className="mb-3" controlId="formDescription">
-            <Form.Label>Description</Form.Label>
+            <Form.Label>Description <small>({ descriptionCharLeft } character(s) remaining)</small></Form.Label>
             <Form.Control 
               as="textarea" 
               rows={5} 
               name="description" 
-              onChange={formik.handleChange} 
+              onChange={handleDescriptionChange} 
               onBlur={formik.handleBlur} 
               value={formik.values.description} 
               placeholder="Describe your experience here..." 

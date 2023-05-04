@@ -27,7 +27,7 @@ module.exports.entrySchema = Joi.object({
     country: Joi.string().required().sanitize(),
     startDate: Joi.date().required(),
     endDate: Joi.date().greater(Joi.ref("startDate")).required(),
-    description: Joi.string().required().sanitize(),
+    description: Joi.string().max(500).required().sanitize(),
     images: Joi.array().required()
 })
 

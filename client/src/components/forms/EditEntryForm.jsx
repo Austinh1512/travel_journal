@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { Formik } from "formik"
@@ -7,9 +7,12 @@ import useAxiosInterceptors from "../../hooks/useAxiosInterceptors"
 import AlertContext from "../../context/AlertContext"
 import useErrorHandler from "../../hooks/useErrorHandler"
 
+const DESCRIPTION_CHAR_LIMIT = 500;
+
 export default function EntryForm(props) {
-  const axios = useAxiosInterceptors();
   const { setAlert } = useContext(AlertContext);
+  const [ descriptionCharLeft, setDescriptionCharLeft ] = useState(DESCRIPTION_CHAR_LIMIT);
+  const axios = useAxiosInterceptors();
   const handleError = useErrorHandler();
 
   //Get entry's images if user is editing
@@ -46,6 +49,7 @@ export default function EntryForm(props) {
           .required("Required")
           .min(Yup.ref("startDate"), "Date must be after start date"),
         description: Yup.string()
+          .max(DESCRIPTION_CHAR_LIMIT, `Only a maximum of ${DESCRIPTION_CHAR_LIMIT} characters allowed`)
           .required("Required")
        })}
       onSubmit={ async (values) => {
@@ -67,6 +71,17 @@ export default function EntryForm(props) {
 
     >
       {formik => {
+        //Calculate how many characters left based on inital value
+        useEffect(() => {
+          setDescriptionCharLeft(DESCRIPTION_CHAR_LIMIT - formik.values.description.length);
+        }, [])
+
+        const handleDescriptionChange = (e) => {
+          formik.setFieldValue("description", e.target.value );
+          setDescriptionCharLeft(DESCRIPTION_CHAR_LIMIT - e.target.value.length);
+        }
+
+
         return <Form noValidate className='mt-4 d-flex flex-column justify-content-center' onSubmit={formik.handleSubmit} >
           <Form.Group className="mb-3" controlId='formLocation'>
             <Form.Label>Location</Form.Label>
@@ -138,12 +153,12 @@ export default function EntryForm(props) {
           
 
           <Form.Group className="mb-3" controlId="formDescription">
-            <Form.Label>Description</Form.Label>
+            <Form.Label>Description <small>({ descriptionCharLeft } character(s) remaining)</small></Form.Label>
             <Form.Control 
               as="textarea" 
               rows={5} 
               name="description" 
-              onChange={formik.handleChange} 
+              onChange={handleDescriptionChange} 
               onBlur={formik.handleBlur} 
               value={formik.values.description} 
               placeholder="Describe your experience here..." 
