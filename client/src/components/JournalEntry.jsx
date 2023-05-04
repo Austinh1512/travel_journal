@@ -56,41 +56,42 @@ export default function JournalEntry(props) {
             images={props.values.images}
             place={props.values.place}
         />
-        
-        <Card className="mt-5">
-            <Row className="g-0">
-                <Col md={3} lg={2} className="d-flex flex-column"> 
-                    <Carousel indicators={false} controls={false} >
-                        { buildCarousel() }
-                    </Carousel>
-                    { user.userID === params.id && <div className="mt-3 d-flex justify-content-center gap-4">
-                        <CustomTooltip id="tooltip-edit" placement="top" text="Edit Entry" >
-                            <Button className="card--btn" onClick={() => { setShowEditModal(!showEditModal) }}>
-                                <PencilSquare />
-                            </Button>
-                        </CustomTooltip>
-                        
-                        <CustomTooltip id="tooltip-delete" placement="top" text="Delete Entry" >
-                            <Button className="card--btn" onClick={() => { setShowDeleteModal(!showDeleteModal) }}>
-                                <Trash />
-                            </Button>
-                        </CustomTooltip>
-                    </div> }
-                </Col>
-                <Col md={9} lg={10}>
-                    <Card.Body className="ps-4">
-                        <div className="card--location">
-                            <GeoAltFill color="#F55A5A" />
-                            <p>{props.values.country.toUpperCase()}</p>
-                            <Card.Link href={`https://www.google.com/maps/search/${props.values.place}`} target="_blank" className="ms-4">View on Google Maps</Card.Link>
-                        </div>
-                        <Card.Title className="display-5 bold">{props.values.place}</Card.Title>
-                        <Card.Subtitle className="my-4 ps-1">{formatDate(props.values.startDate)} - {formatDate(props.values.endDate)}</Card.Subtitle>
-                        <Card.Text className="card--description lead">{props.values.description}</Card.Text>
-                    </Card.Body>
-                </Col>
-            </Row>
-        </Card>
+        <div className="card-container">
+            <Card className="mt-5">
+                <Row className="g-0">
+                    <Col md={4} lg={2} className="d-flex flex-column"> 
+                        <Carousel indicators={false} controls={false} >
+                            { buildCarousel() }
+                        </Carousel>
+                        { user.userID === params.id && <div className="mt-3 d-flex justify-content-center gap-4">
+                            <CustomTooltip id="tooltip-edit" placement="top" text="Edit Entry" >
+                                <Button className="card--btn" onClick={() => { setShowEditModal(!showEditModal) }}>
+                                    <PencilSquare />
+                                </Button>
+                            </CustomTooltip>
+                            
+                            <CustomTooltip id="tooltip-delete" placement="top" text="Delete Entry" >
+                                <Button className="card--btn" onClick={() => { setShowDeleteModal(!showDeleteModal) }}>
+                                    <Trash />
+                                </Button>
+                            </CustomTooltip>
+                        </div> }
+                    </Col>
+                    <Col md={8} lg={10}>
+                        <Card.Body className="ps-4">
+                            <div className="card--location">
+                                <GeoAltFill color="#F55A5A" />
+                                <p>{props.values.country.toUpperCase()}</p>
+                                <Card.Link href={`https://www.google.com/maps/search/${props.values.place}`} target="_blank" className="ms-4">View on Google Maps</Card.Link>
+                            </div>
+                            <Card.Title className="display-5 bold">{props.values.place}</Card.Title>
+                            <Card.Subtitle className="my-4 ps-1">{formatDate(props.values.startDate)} - {formatDate(props.values.endDate)}</Card.Subtitle>
+                            <Card.Text className="card--description lead">{props.values.description}</Card.Text>
+                        </Card.Body>
+                    </Col>
+                </Row>
+            </Card>
+        </div>
         <hr></hr>
         </>
     )
