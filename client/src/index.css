@@ -118,8 +118,13 @@
 }
 
 /* Card */
+.card-container {
+    max-height: 40vh;
+}
+
 .card {
     border: none;
+    height: 100%;
 }
 
 .card--thumbnail {
