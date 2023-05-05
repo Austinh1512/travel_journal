@@ -77,6 +77,7 @@ export default function EntryForm(props) {
           });
           props.addJournalEntry(res.data);
           resetForm();
+          props.toggle();
         } catch(err) {
           handleError(err);
         }

@@ -109,7 +109,7 @@ export default function Home() {
           { user.userID === params.id && <Button variant="primary" size="lg" className="form--btn" onClick={toggleForm} href="#create-new-form" >
               { !showForm ? "Create New +" : "Nevermind :(" }
           </Button> }
-          { showForm && <NewEntryForm addJournalEntry={addJournalEntry} requestMethod="post" /> }
+          { showForm && <NewEntryForm addJournalEntry={addJournalEntry} toggle={toggleForm} /> }
           </div>
         </div>
     )
