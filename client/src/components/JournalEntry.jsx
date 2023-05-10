@@ -19,6 +19,8 @@ export default function JournalEntry(props) {
     const [showCarouselModal, setShowCarouselModal] = useState(false);
     const { user } = useContext(AuthContext);
     const params = useParams();
+    const { images } = props.values;
+    console.log(images);
 
     const formatDate = (date) => {
         const d = new Date(`${date}T00:00`);
@@ -53,15 +55,20 @@ export default function JournalEntry(props) {
         <CarouselModel 
             show={showCarouselModal}
             toggle={() => { setShowCarouselModal(!showCarouselModal) }}
-            images={props.values.images}
+            images={images}
             place={props.values.place}
         />
         <Card className="mt-5">
             <Row className="g-0">
-                <Col md={4} lg={2} className="d-flex flex-column"> 
-                    <Carousel indicators={false} controls={false} >
+                <Col md={4} lg={2} className="d-flex flex-column position-relative"> 
+                    {/* <Carousel indicators={false} controls={false} >
                         { buildCarousel() }
-                    </Carousel>
+                    </Carousel> */}
+                    <Card.Img variant="left" className="rounded card--thumbnail align-self-center d-block w-100" src={images[0].url} />
+                    <button type="button" onClick={() => { setShowCarouselModal(!showCarouselModal) }} className="rounded-btn btn-on-image" >
+                        { images.length > 1 ? `+${images.length - 1}` : <ZoomIn size={20} /> }
+                    </button>
+                    
                     { user.userID === params.id && <div className="mt-3 d-flex justify-content-center gap-4">
                         <CustomTooltip id="tooltip-edit" placement="top" text="Edit Entry" >
                             <Button className="card--btn" onClick={() => { setShowEditModal(!showEditModal) }}>
