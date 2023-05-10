@@ -20,7 +20,7 @@
     position: absolute;
     top: 5%;
     right: 5%;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 .btn-on-image:hover {
@@ -153,15 +153,9 @@
 }
 
 .card--btn {
-    display: none;
-}
-
-@media screen and (max-width: 992px) {
-    .card-btn {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .card--btn, .form--btn {
@@ -174,12 +168,6 @@
     color: #F55A5A;
     border: 1px solid #F55A5A;
  }
-
-.card:hover  .card--btn, .card--btn:hover {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 /* Card Carousel */
 .carousel, .carousel-inner, .carousel-item {
