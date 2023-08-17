@@ -1,6 +1,6 @@
 # Travel Journal - Social Media Platform for Travel Enthusiasts
 
-![Travel Journal](link-to-screenshot.png)
+![Travel Journal]((https://www.dropbox.com/scl/fi/e94ufvxcbe49fabzd2t3h/travel-journal.PNG?rlkey=yxmpakzio5iozh1gep0q788yl&dl=0))
 
 ## Table of Contents
 - [Introduction](#introduction)
