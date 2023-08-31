@@ -5,7 +5,6 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import Carousel from "react-bootstrap/Carousel";
 import DeleteModal from "./modals/DeleteModal";
 import EditModal from "./modals/EditModal";
 import CarouselModel from "./modals/CarouselModal";
@@ -25,29 +24,6 @@ export default function JournalEntry(props) {
     const d = new Date(`${date}T00:00`);
     const options = { month: "short", year: "numeric", day: "numeric" };
     return new Intl.DateTimeFormat("en-us", options).format(d);
-  };
-
-  const buildCarousel = () => {
-    return props.values.images.map((img, i) => {
-      return (
-        <Carousel.Item key={i}>
-          <Card.Img
-            variant="left"
-            className="rounded card--thumbnail align-self-center d-block w-100"
-            src={img.url}
-          />
-          <button
-            type="button"
-            onClick={() => {
-              setShowCarouselModal(!showCarouselModal);
-            }}
-            className="rounded-btn btn-on-image"
-          >
-            <ZoomIn size={20} />
-          </button>
-        </Carousel.Item>
-      );
-    });
   };
 
   return (
@@ -79,9 +55,6 @@ export default function JournalEntry(props) {
       <Card className="mt-5">
         <Row className="g-0">
           <Col md={4} lg={2} className="d-flex flex-column position-relative">
-            {/* <Carousel indicators={false} controls={false} >
-                        { buildCarousel() }
-                    </Carousel> */}
             <Card.Img
               variant="left"
               className="rounded card--thumbnail align-self-center d-block w-100"
