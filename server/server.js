@@ -9,7 +9,7 @@ const setHeaders = require("./middleware/setHeaders");
 const mongoSanitize = require("express-mongo-sanitize");
 
 //Connect to Mongo
- connectDB();
+connectDB();
 
 //Middleware
 app.use(setHeaders);
@@ -30,12 +30,13 @@ const authRouter = require("./routes/auth");
 app.use("/api/auth", authRouter);
 
 app.use("*", (req, res) => {
-    res.status(404).json({ "error": "Page does not exist" })
-})
+  res.status(404).json({ error: "Page does not exist" });
+});
 
 app.use((err, req, res, next) => {
-    res.status(500).json({ "error": err.message });
-})
+  res.status(500).json({ error: err.message });
+});
 
-app.listen(5000, () => { console.log("Server running...") });
-
+app.listen(5000, () => {
+  console.log("Server running...");
+});
