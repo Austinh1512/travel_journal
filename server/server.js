@@ -21,12 +21,16 @@ app.use(mongoSanitize());
 
 //Passport jwt strategy
 require("./config/passport-jwt");
+require("./config/passport-oauth");
 
 //Route Handlers
 const entryRouter = require("./routes/entries");
 app.use("/api/entries", entryRouter);
 
-const authRouter = require("./routes/auth");
+const googleOAuthRouter = require("./routes/auth/google");
+app.use("/api/auth/google", googleOAuthRouter);
+
+const authRouter = require("./routes/auth/jwt");
 app.use("/api/auth", authRouter);
 
 app.use("*", (req, res) => {
