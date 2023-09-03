@@ -2,7 +2,10 @@ const express = require("express");
 const passport = require("passport");
 const router = express.Router();
 
-const CLIENT_URL = "http://localhost:5173";
+const CLIENT_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5173"
+    : "https://travel-journal-hdk8.onrender.com";
 
 router.get(
   "/",
@@ -17,7 +20,7 @@ router.get(
     failureRedirect: CLIENT_URL + "/login",
   }),
   (req, res) => {
-    const { user, accessToken, refreshToken } = req.user;
+    const { refreshToken } = req.user;
     res.cookie("jwt", refreshToken, {
       httpOnly: false,
       secure: true,
