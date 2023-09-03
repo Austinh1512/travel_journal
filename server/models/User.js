@@ -8,9 +8,16 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  googleID: {
+    type: String,
+    unique: true,
+  },
   password: {
     type: String,
-    required: true,
+    //required if not using google account
+    required: function () {
+      return !this.googleID;
+    },
   },
   refreshToken: {
     type: String,
