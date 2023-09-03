@@ -18,7 +18,6 @@ export default function JournalEntry(props) {
   const { user } = useContext(AuthContext);
   const params = useParams();
   const { images } = props.values;
-  console.log(images);
 
   const formatDate = (date) => {
     const d = new Date(`${date}T00:00`);
