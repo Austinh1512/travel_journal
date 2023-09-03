@@ -32,6 +32,21 @@
   cursor: pointer;
 }
 
+/* Media queries */
+
+/* Authentication Form Borders */
+@media (min-width: 768px) {
+  .border-lg-right {
+    border-right: 1px solid lightgray;
+  }
+}
+
+@media (max-width: 767px) {
+  .border-xs-bottom {
+    border-bottom: 1px solid lightgray;
+  }
+}
+
 /* Alert */
 .alert {
   width: 50%;
