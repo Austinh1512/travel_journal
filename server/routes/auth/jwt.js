@@ -7,8 +7,8 @@ const {
   handleLogin,
   handleRefresh,
   handleLogout,
-} = require("../controllers/auth");
-const validateUserSchema = require("../middleware/validateUserSchema");
+} = require("../../controllers/auth");
+const validateUserSchema = require("../../middleware/validateUserSchema");
 
 router.post("/register", validateUserSchema, handleAsync(handleRegister));
 
