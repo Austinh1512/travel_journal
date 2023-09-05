@@ -6,15 +6,21 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    unique: true,
+    /*
+     * Because full name is used as username when using
+     * a Google account, allow for people who have
+     * the same name to have duplicate usernames.
+     */
+    unique: function () {
+      return !this.googleID;
+    },
   },
   googleID: {
     type: String,
-    unique: true,
   },
   password: {
     type: String,
-    //required if not using google account
+    //required if not using Google account
     required: function () {
       return !this.googleID;
     },
