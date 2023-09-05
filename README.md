@@ -1,6 +1,7 @@
 # Travel Journal - Social Media Platform for Travel Enthusiasts
 
-![Travel Journal](https://www.dropbox.com/scl/fi/e94ufvxcbe49fabzd2t3h/travel-journal.PNG?rlkey=yxmpakzio5iozh1gep0q788yl&dl=0.png)
+![Travel Journal](https://github.com/Austinh1512/travel_journal/assets/46667275/8e0df7c2-7f22-4aca-89ce-a5bcc5288ada)
+
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -15,26 +16,29 @@
 Travel Journal is a social media platform designed for travel enthusiasts to share and explore their travel experiences through interactive posts and journals. Users can create accounts, post travel entries, and view others' posts
 
 ## Features
-- User Registration and Authentication
+- User Authentication Using JWTs and Google OAuth
 - Create, Edit, and Delete Posts
 - Image Upload
+- Pagination
 - Responsive Design for Mobile and Desktop
 
 ## Technologies Used
 - MongoDB
 - Express.js
 - React
-- React-Bootstrap
 - Node.js
+- React-Bootstrap
+- Formik
+- Passport
 
 ## Getting Started
 To set up and run the Travel Journal application on your local machine, follow the instructions below.
 
 ## Installation
 1. Clone the repository: `git clone https://github.com/Austinh1512/travel_journal.git`
-2. Navigate to the project directory: `cd travel_journal`
+2. Navigate to the server directory: `cd travel_journal/server`
 3. Install backend dependencies: `npm install`
-4. Navigate to the client directory: `cd client`
+4. Navigate to the client directory: `cd travel_journal/client`
 5. Install frontend dependencies: `npm install`
 
 ## Usage
